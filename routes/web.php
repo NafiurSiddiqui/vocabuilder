@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WordsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,9 +19,13 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/word-processor', function () {
-    return Inertia::render('WordProcessor');
-})->middleware(['auth', 'verified'])->name('word-processor');
+
+
+Route::middleware('auth', 'verified')->group(function () {
+    Route::get('/word-processor', [WordsController::class, 'create'])->name('word-processor');
+
+    Route::post('word-processor', [WordsController::class, 'store'])->name('word-processor.store');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
