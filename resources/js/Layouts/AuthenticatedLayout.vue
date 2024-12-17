@@ -39,6 +39,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    :href="route('word-processor')"
+                                    :active="route().current('word-processor')"
+                                >
+                                    Word Processor
+                                </NavLink>
                             </div>
                         </div>
 
