@@ -5,19 +5,18 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+
 const form = useForm({
     words: '',
     sentence: '',
 });
 
 const submit = () => {
-    // form.post(route('register'), {
-    //     onFinish: () => {
-    //         form.reset('password', 'password_confirmation');
-    //     },
-    // });
-    console.log('WORDS', form.words);
-    console.log('SENTENCE:', form.sentence);
+    form.post(route('word-processor.store'), {
+        onFinish: () => {
+            form.reset('words');
+        },
+    });
 };
 </script>
 <template>

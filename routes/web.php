@@ -23,7 +23,6 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/word-processor', [WordsController::class, 'create'])->name('word-processor');
-
     Route::post('word-processor', [WordsController::class, 'store'])->name('word-processor.store');
 });
 
