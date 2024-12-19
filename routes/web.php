@@ -19,6 +19,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/vuelearner', function () {
+    return Inertia::render('VueLearner');
+})->name('vuelearner');
+
 
 
 Route::middleware('auth', 'verified')->group(function () {

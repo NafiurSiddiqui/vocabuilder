@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
-const form = useForm({
+const form = useForm('formData', {
     words: '',
     sentence: '',
 });
@@ -29,9 +29,9 @@ const submit = () => {
                 Word Processor
             </h2>
         </template>
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="bg-slate-300 p-4">
             <!-- cards bg -->
-            <div>
+            <div class="my-4 h-[20rem] w-2/4">
                 <InputLabel for="words" value="Words" />
                 <TextInput
                     id="words"
