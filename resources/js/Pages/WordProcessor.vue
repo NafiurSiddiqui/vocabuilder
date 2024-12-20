@@ -2,7 +2,6 @@
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
@@ -33,7 +32,7 @@ const submit = () => {
             <!-- cards bg -->
             <div class="my-4 h-[20rem] w-2/4">
                 <InputLabel for="words" value="Words" />
-                <TextInput
+                <!-- <TextInput
                     id="words"
                     type="text"
                     class="mt-1 block w-full"
@@ -41,7 +40,15 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="words"
-                />
+                /> -->
+
+                <textarea
+                    name="words"
+                    id="words"
+                    class="h-full w-full p-2"
+                    v-model="form.words"
+                    required
+                ></textarea>
 
                 <InputError class="mt-2" :message="form.errors.words" />
             </div>
