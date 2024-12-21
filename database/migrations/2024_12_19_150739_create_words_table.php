@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use function Pest\Laravel\json;
+
 return new class extends Migration
 {
     /**
@@ -14,10 +16,15 @@ return new class extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('words');
-            $table->string('meaning');
-            $table->string('example');
+            $table->string('word')->unique();
+            $table->string('phonetic');
+            $table->string('audio');
+            $table->string('definition');
+            $table->json('examples');
+            $table->string('part_of_speech');
             $table->string('category');
+            $table->json('synonyms');
+            $table->json('antonyms');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
