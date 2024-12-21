@@ -47,6 +47,7 @@ const submit = () => {
                     id="words"
                     class="h-full w-full p-2"
                     v-model="form.words"
+                    autocomplete="words"
                     required
                 ></textarea>
 

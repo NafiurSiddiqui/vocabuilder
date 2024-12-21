@@ -11,6 +11,16 @@ class Words extends Model
     /** @use HasFactory<\Database\Factories\WordsFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'word',
+        'phonetic',
+        'pronunciation',
+        'definition',
+        'examples',
+        'category',
+        'user_id'
+    ];
+
 
     public function user(): BelongsTo
     {

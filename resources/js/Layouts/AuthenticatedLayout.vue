@@ -200,5 +200,10 @@ const showingNavigationDropdown = ref(false);
                 <slot />
             </main>
         </div>
+
+        <!-- flash toast -->
+        <div class="fixed bottom-3 right-3 rounded bg-green-400 p-4 text-white">
+            {{ $page.props.flash }}
+        </div>
     </div>
 </template>

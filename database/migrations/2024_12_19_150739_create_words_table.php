@@ -18,13 +18,10 @@ return new class extends Migration
             $table->timestamps();
             $table->string('word')->unique();
             $table->string('phonetic');
-            $table->string('audio');
-            $table->string('definition');
+            $table->json('pronunciation');
+            $table->json('definition');
             $table->json('examples');
-            $table->string('part_of_speech');
-            $table->string('category');
-            $table->json('synonyms');
-            $table->json('antonyms');
+            $table->string('category')->default('uncategorized');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
