@@ -7,12 +7,12 @@ import { Head, useForm } from '@inertiajs/vue3';
 
 const form = useForm('formData', {
     words: '',
-    sentence: '',
 });
 
 const submit = () => {
     form.post(route('word-processor.store'), {
         onFinish: () => {
+            console.log('finished, should have cleared');
             form.reset('words');
         },
     });
@@ -30,9 +30,10 @@ const submit = () => {
         </template>
         <form @submit.prevent="submit" class="bg-slate-300 p-4">
             <!-- cards bg -->
-            <div class="my-4 h-[20rem] w-2/4">
-                <InputLabel for="words" value="Words" />
-                <!-- <TextInput
+            <div class="flex items-start justify-between">
+                <div class="my-4 h-[20rem] w-2/4">
+                    <InputLabel for="words" value="Words" />
+                    <!-- <TextInput
                     id="words"
                     type="text"
                     class="mt-1 block w-full"
@@ -42,32 +43,20 @@ const submit = () => {
                     autocomplete="words"
                 /> -->
 
-                <textarea
-                    name="words"
-                    id="words"
-                    class="h-full w-full p-2"
-                    v-model="form.words"
-                    autocomplete="words"
-                    required
-                ></textarea>
+                    <textarea
+                        name="words"
+                        id="words"
+                        class="h-full w-full p-2"
+                        v-model="form.words"
+                        autocomplete="words"
+                        required
+                    ></textarea>
 
-                <InputError class="mt-2" :message="form.errors.words" />
+                    <InputError class="mt-2" :message="form.errors.words" />
+                </div>
+
+                <div class="border p-2">OR Upload your file</div>
             </div>
-
-            <!-- <div>
-                <InputLabel for="sentence" value="Sentence" />
-                <TextInput
-                    id="sentence"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.sentence"
-                    required
-                    autofocus
-                    autocomplete="sentence"
-                />
-
-                <InputError class="mt-2" :message="form.errors.sentence" />
-            </div> -->
 
             <PrimaryButton>Submit</PrimaryButton>
         </form>
