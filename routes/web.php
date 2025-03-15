@@ -28,6 +28,10 @@ Route::get('/vuelearner', function () {
 Route::middleware('auth', 'verified')->group(function () {
     Route::get('/word-processor', [WordsController::class, 'create'])->name('word-processor');
     Route::post('word-processor', [WordsController::class, 'store'])->name('word-processor.store');
+    Route::get('/word-inventory', [
+        WordsController::class,
+        'index'
+    ])->name('word-inventory');
 });
 
 Route::middleware('auth')->group(function () {

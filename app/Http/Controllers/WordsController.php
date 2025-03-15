@@ -15,7 +15,11 @@ class WordsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index()
+    {
+        $words = Words::all();
+        return Inertia::render('Inventory', ['words' => $words]);
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -45,6 +45,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Word Processor
                                 </NavLink>
+                                <NavLink
+                                    :href="route('word-inventory')"
+                                    :active="route().current('word-inventory')"
+                                >
+                                    Inventory
+                                </NavLink>
                             </div>
                         </div>
 
