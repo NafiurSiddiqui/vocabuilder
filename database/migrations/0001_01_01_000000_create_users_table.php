@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -35,6 +36,16 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        //if not in production, create a user
+        if (env('APP_ENV') !== 'production') {
+            User::create([
+                'name' => 'ed',
+                'email' => 'dev@local.com',
+                'password' => bcrypt('secret'),
+                'email_verified_at' => now(),
+            ]);
+        }
     }
 
     /**
