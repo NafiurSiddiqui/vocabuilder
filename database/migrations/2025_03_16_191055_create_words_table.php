@@ -14,6 +14,13 @@ return new class extends Migration
         Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('word')->unique();
+            $table->string('phonetic');
+            $table->json('pronunciation');
+            $table->json('definition');
+            $table->json('examples');
+            $table->string('category')->default('uncategorized');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
 
