@@ -14,10 +14,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
     Route::get('/word-processor', [WordController::class, 'create'])->name('word-processor');
     Route::post('word-processor', [WordController::class, 'store'])->name('word-processor.store');
-    Route::get('/word-inventory', [
+    Route::get('/inventory', [
         WordController::class,
         'index'
-    ])->name('word-inventory');
+    ])->name('inventory');
 });
 
 require __DIR__ . '/settings.php';
