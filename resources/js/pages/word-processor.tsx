@@ -1,7 +1,10 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import InputError from '@/components/input-error';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -10,26 +13,49 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+type WordsForm = {
+    words: string;
+};
+
 export default function WordProcessor() {
+    const { data, setData, post, processing, errors, reset } = useForm<Required<WordsForm>>({
+        words: '',
+    });
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+
+        post(route('word-processor.store'), {
+            onFinish: () => {
+                console.log('finished, should have cleared');
+                reset('words');
+            },
+        });
+    };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Word Processor" />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
+            {/* <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4"></div> */}
+
+            <form className="flex flex-col gap-6" onSubmit={submit}>
+                <div className="grid gap-6">
+                    <Label htmlFor="words">Words</Label>
+                    {/* <Input
+                        id="name"
+                        type="text"
+                        required
+                        autoFocus
+                        tabIndex={1}
+                        autoComplete="name"
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        disabled={processing}
+                        placeholder="Full name"
+                    /> */}
+                    <Textarea placeholder="Put your words here" />
+                    <InputError message={errors.words} className="mt-2" />
                 </div>
-                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                </div>
-            </div>
+            </form>
         </AppLayout>
     );
 }
