@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
+use function PHPSTORM_META\map;
+
 class WordController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class WordController extends Controller
     public function index()
     {
         $words = Word::all();
-
+        // dd($words);
         return Inertia::render('inventory', ['words' => $words]);
     }
 
@@ -32,6 +34,9 @@ class WordController extends Controller
      */
     public function store(Request $request)
     {
+
+        // dd($request['words']);
+
         $attributes = $request->validate([
             'words' => ['required', 'string']
         ]);
