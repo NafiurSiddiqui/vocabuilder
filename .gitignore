@@ -4,6 +4,7 @@
 /public/build
 /public/hot
 /public/storage
+/public/transaction_report.txt
 /storage/*.key
 /storage/pail
 /vendor
