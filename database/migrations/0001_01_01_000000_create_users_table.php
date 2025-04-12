@@ -41,7 +41,7 @@ return new class extends Migration
         if (env('APP_ENV') !== 'production') {
             User::create([
                 'name' => 'ed',
-                'email' => 'dev@local.com',
+                'email' => 'dev@local.me',
                 'password' => bcrypt('secret'),
                 'email_verified_at' => now(),
             ]);
