@@ -1,6 +1,10 @@
+import { DropdownMenuContent } from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Check, Filter } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -35,6 +39,48 @@ export default function Inventory({ words }: InventoryProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Inventory" />
+            <div className='border-b flex items-center justify-end px-6 py-1'>
+                <DropdownMenu >
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="rounded-sm p-2">
+                            <Filter size={16} />
+                            Filter
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {/* <DropdownMenuLabel>Filter</DropdownMenuLabel> */}
+                        {/* <DropdownMenuSeparator /> */}
+                        <DropdownMenuItem>Category</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* sort */}
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="rounded-sm p-2">
+                            <Filter size={16} />
+                            Sort
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {/* <DropdownMenuLabel>Filter</DropdownMenuLabel> */}
+
+                        <DropdownMenuItem>
+                            <span className="flex items-center">
+                                <span className="mr-2">A - Z</span>
+                                {/* <Check className="h-4 w-4" /> */}
+                            </span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                            <span className="flex items-center">
+                                <span className="mr-2">Z - A</span>
+                                {/* <Check className="h-4 w-4" /> */}
+                            </span>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {words.map((wordObj) => {
                     try {
