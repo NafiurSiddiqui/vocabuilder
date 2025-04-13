@@ -53,7 +53,7 @@ export default function Inventory({ words }: InventoryProps) {
 
                                 {pronunciation && (
                                     <div>
-                                        <p>Pronunciations</p>: <audio src={pronunciation} controls></audio>
+                                        <p>Pronunciations</p> <audio src={pronunciation} controls></audio>
                                     </div>
                                 )}
                                 <div>
@@ -81,8 +81,8 @@ export default function Inventory({ words }: InventoryProps) {
                                     <b>Synonyms</b>
                                     {synonyms.length > 0 && (
                                         <ul>
-                                            {synonyms.map((item: string) => (
-                                                <li>{item}</li>
+                                            {synonyms.map((item: string, index: number) => (
+                                                <li key={index}>{item}</li>
                                             ))}
                                         </ul>
                                     )}
