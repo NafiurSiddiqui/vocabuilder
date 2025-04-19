@@ -18,6 +18,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         WordController::class,
         'index'
     ])->name('inventory');
+    Route::get('/inventory/{title}', [
+        WordController::class,
+        'show'
+    ])->name('inventory.show');
+    // Route::get('/inventory/{title}/edit', [
+    //     WordController::class,
+    //     'edit'
+    // ])->name('inventory.edit');
+    // Route::put('/inventory/{title}', [
+    //     WordController::class,
+    //     'update'
+    // ])->name('inventory.update');
+    // Route::delete('/inventory/{title}', [
+    //     WordController::class,
+    //     'destroy'
+    // ])->name('inventory.destroy');
 });
 
 require __DIR__ . '/settings.php';
