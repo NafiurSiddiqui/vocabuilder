@@ -2,8 +2,7 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head } from "@inertiajs/react";
 
-// TODO: Make the category relationship with the words
-// TODO: Make the word relationship with the Category
+
 // TODO: See the kind of data you are receiving, make a type/word.tsx and use it here.
 
 export default function Show({ word }: { word: Word }) {
