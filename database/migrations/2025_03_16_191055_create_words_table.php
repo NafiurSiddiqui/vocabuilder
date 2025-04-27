@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,11 +14,11 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('word')->unique();
-            $table->string('phonetic');
-            $table->json('pronunciation');
+            $table->string('phonetic')->nullable();
+            $table->json('pronunciation')->nullable();
             $table->json('definition');
-            $table->json('examples');
-            $table->string('category')->default('uncategorized');
+            $table->json('examples')->nullable();
+            $table->string('deck')->default('tossed');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }

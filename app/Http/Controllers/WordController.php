@@ -18,7 +18,7 @@ class WordController extends Controller
     {
         $words = Word::all();
         // dd($words);
-        return Inertia::render('inventory/index', ['words' => $words]);
+        // return Inertia::render('inventory/index', ['words' => $words]);
     }
 
     /**
@@ -148,7 +148,7 @@ class WordController extends Controller
      */
     public function show(Word $word)
     {
-        return Inertia::render('inventory/show', ['word' => $word]);
+        // return Inertia::render('inventory/show', ['word' => $word]);
     }
 
     /**
