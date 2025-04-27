@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DeckController;
 use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,11 +16,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/word-processor', [WordController::class, 'create'])->name('word-processor');
     Route::post('word-processor', [WordController::class, 'store'])->name('word-processor.store');
     Route::get('/inventory', [
-        WordController::class,
+        DeckController::class,
         'index'
     ])->name('inventory');
     Route::get('/inventory/{title}', [
-        WordController::class,
+        DeckController::class,
         'show'
     ])->name('inventory.show');
     // Route::get('/inventory/{title}/edit', [
