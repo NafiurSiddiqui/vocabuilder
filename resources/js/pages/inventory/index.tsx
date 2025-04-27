@@ -1,11 +1,19 @@
 import { DropdownMenuContent } from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Head, useForm } from '@inertiajs/react';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Check, Filter } from 'lucide-react';
-import { InventoryCard } from '@/components/inventory-card';
+import { Filter, Plus } from 'lucide-react';
+import { DeckCard } from '@/components/deck-card';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useState } from 'react';
+
+//TODO: work on edit, delete, and update on DeckController
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -14,73 +22,133 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface InventoryProps {
-    words: Array<{
-        id: number;
-        created_at: string;
-        updated_at: string;
-        word: string;
-        phonetic: string;
-        pronunciation: string;
-        definition: string;
-        examples: string;
-        category: string;
-        user_id: number;
-    }>;
+interface Deck {
+    id: number;
+    name: string;
+    description: string | null;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
 }
 
-interface Definitions {
-    antonyms: Array<string>;
-    definition: string;
-    example: string;
-    synonyms: Array<string>;
-}
+export default function Inventory({ decks }: { decks: Deck[] }) {
+    const [open, setOpen] = useState(false);
 
-export default function Inventory({ words }: InventoryProps) {
+    const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
+        name: '',
+        description: '',
+    });
+
+    console.log('Dialog is open: ', open);
+
+    const handleDeckChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleDeckSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        post('/inventory', {
+            onSuccess: () => {
+                setOpen(false);
+            }
+        });
+
+    };
+
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Inventory" />
-            <div className='border-b flex items-center justify-end px-6 py-1'>
-                <DropdownMenu >
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="rounded-sm p-2">
-                            <Filter size={16} />
-                            Filter
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {/* <DropdownMenuLabel>Filter</DropdownMenuLabel> */}
-                        {/* <DropdownMenuSeparator /> */}
-                        <DropdownMenuItem>Category</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
 
-                {/* sort */}
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="rounded-sm p-2">
-                            <Filter size={16} />
-                            Sort
+            <div className='border-b flex items-center justify-between px-6 py-1'>
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogTrigger asChild>
+                        <Button variant="default" className="rounded-sm p-2" size="sm" >
+                            <Plus size={16} />
+                            Create a Deck
                         </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {/* <DropdownMenuLabel>Filter</DropdownMenuLabel> */}
+                    </DialogTrigger>
 
-                        <DropdownMenuItem>
-                            <span className="flex items-center">
-                                <span className="mr-2">A - Z</span>
-                                {/* <Check className="h-4 w-4" /> */}
-                            </span>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <span className="flex items-center">
-                                <span className="mr-2">Z - A</span>
-                                {/* <Check className="h-4 w-4" /> */}
-                            </span>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Create a Deck</DialogTitle>
+                        </DialogHeader>
+
+                        <form onSubmit={handleDeckSubmit} >
+
+                            <fieldset>
+                                <Label htmlFor="name">Name</Label>
+                                <Input
+                                    type="text"
+                                    name="name"
+                                    onChange={handleDeckChange}
+                                    value={data.name}
+                                    id="name"
+                                />
+                                {errors.name && <div className="text-red-500 text-xs my-2">{errors.name}</div>}
+                            </fieldset>
+                            <fieldset>
+                                <Label htmlFor="description">Description</Label>
+                                <Textarea
+                                    name="description"
+                                    onChange={handleDeckChange}
+                                    value={data.description}
+                                    id="description"
+                                />
+                                {errors.description && <div className="text-red-500 text-xs my-2">{errors.description}</div>}
+                            </fieldset>
+                            <DialogFooter className='mt-4'>
+                                <Button type="submit">Create</Button>
+                            </DialogFooter>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+                <div>
+                    <DropdownMenu >
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="rounded-sm p-2">
+                                <Filter size={16} />
+                                Filter
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            {/* <DropdownMenuLabel>Filter</DropdownMenuLabel> */}
+                            {/* <DropdownMenuSeparator /> */}
+                            <DropdownMenuItem>Category</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    {/* sort */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="rounded-sm p-2">
+                                <Filter size={16} />
+                                Sort
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            {/* <DropdownMenuLabel>Filter</DropdownMenuLabel> */}
+
+                            <DropdownMenuItem>
+                                <span className="flex items-center">
+                                    <span className="mr-2">A - Z</span>
+                                    {/* <Check className="h-4 w-4" /> */}
+                                </span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <span className="flex items-center">
+                                    <span className="mr-2">Z - A</span>
+                                    {/* <Check className="h-4 w-4" /> */}
+                                </span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
             {/* <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {words.map((wordObj) => {
@@ -148,33 +216,22 @@ export default function Inventory({ words }: InventoryProps) {
                     }
                 })}
             </div> */}
-            {/* <div className='gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'> */}
+
             <section className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 px-8 lg:px-6 py-4'>
-                <InventoryCard
-                    title="Chemistry"
-                    wordCount={words.length}
-                    showCheckbox
-                    checked={false}
-                    onCheck={() => { }}
-                    onAdd={() => { }}
-                />
-                <InventoryCard
-                    title="Biology"
-                    wordCount={words.length}
-                    showCheckbox
-                    checked={false}
-                    onCheck={() => { }}
-                    onAdd={() => { }}
-                />
-                <InventoryCard
-                    title="Tech"
-                    wordCount={words.length}
-                    showCheckbox
-                    checked={false}
-                    onCheck={() => { }}
-                    onAdd={() => { }}
-                />
+
+                {decks?.map((deck) => (
+                    <DeckCard
+                        key={deck.id}
+                        title={deck.name}
+                        wordCount={deck.words?.count || 0}
+                        showCheckbox
+                        checked={false}
+                        onCheck={() => { }}
+                        onAdd={() => { }}
+                    />
+                ))}
             </section>
-        </AppLayout>
+
+        </AppLayout >
     );
 }

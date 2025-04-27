@@ -4,7 +4,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Plus } from "lucide-react";
 import { Link } from "@inertiajs/react";
 
-interface InventoryCardProps {
+interface DeckCardProps {
     title: string;
     wordCount: number;
     showCheckbox?: boolean;
@@ -13,14 +13,14 @@ interface InventoryCardProps {
     onAdd?: () => void;
 }
 
-export function InventoryCard({
+export function DeckCard({
     title,
     wordCount,
     showCheckbox = false,
     checked = false,
     onCheck,
     onAdd,
-}: InventoryCardProps) {
+}: DeckCardProps) {
     return (
         <Card>
             <CardHeader className="flex-row items-center justify-between gap-0">
