@@ -18,11 +18,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/inventory', [
         DeckController::class,
         'index'
-    ])->name('inventory');
+    ])->name('inventory.index');
     Route::get('/inventory/{title}', [
         DeckController::class,
         'show'
     ])->name('inventory.show');
+    Route::post('/inventory', [
+        DeckController::class,
+        'store'
+    ])->name('inventory.store');
+
     // Route::get('/inventory/{title}/edit', [
     //     WordController::class,
     //     'edit'
