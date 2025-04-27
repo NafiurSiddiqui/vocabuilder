@@ -5,8 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -38,13 +37,15 @@ return new class extends Migration
         });
 
         //if not in production, create a user
-        if (env('APP_ENV') !== 'production') {
-            User::create([
-                'name' => 'ed',
-                'email' => 'dev@local.me',
-                'password' => bcrypt('secret'),
-                'email_verified_at' => now(),
-            ]);
+        if (env('APP_ENV') === 'local') {
+            User::firstOrCreate(
+                ['email' => 'dev@local.me'],
+                [
+                    'name' => 'ed',
+                    'password' => bcrypt('secret'),
+                    'email_verified_at' => now()
+                ]
+            );
         }
     }
 
