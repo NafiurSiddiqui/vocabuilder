@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Testing\Fakes\Fake;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Deck>
@@ -16,8 +17,13 @@ class DeckFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
-            //
+            'id' => fake()->unique()->randomNumber(),
+            'name' => fake()->unique()->word(),
+            'description' => fake()->sentence(),
+            'user_id' => 1,
+
         ];
     }
 }
