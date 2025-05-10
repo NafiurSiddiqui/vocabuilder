@@ -25,3 +25,4 @@ yarn-error.log
 /.vscode
 /.zed
 public/transaction_report.txt
+resources/js/pages/inventory/vocabuilder.code-workspace
