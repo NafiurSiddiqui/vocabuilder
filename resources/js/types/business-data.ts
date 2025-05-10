@@ -19,3 +19,13 @@ export interface Definitions {
     example: string;
     synonyms: Array<string>;
 }
+
+//Deck
+export interface Deck {
+    id: number;
+    name: string;
+    description: string | null;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
+}
