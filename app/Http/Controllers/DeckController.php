@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deck;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class DeckController extends Controller
 {
     public function index()
     {
-        $userId = auth()->id();
-        $decks = Deck::where('user_id', $userId)->get();
-        return Inertia::render('inventory/index', ['decks' => $decks]);
+        $userId = Auth::user()->id;
+        $decks = Deck::forAuthedUser()->orderBy('name', 'desc')->simplePaginate(20);
+        // $decks = Deck::where('user_id', $userId)->get();
+        // dd($decks->items());
+        // dd($decks);
+        return Inertia::render('inventory/index', ['deckItems' => $decks->items(), 'decks' => $decks]);
     }
 
     public function create()
@@ -26,8 +31,8 @@ class DeckController extends Controller
             'name' => ['required', 'min:3', 'max:255', 'unique:decks'],
             'description' => ['nullable'],
         ]);
-        $attributes['user_id'] = auth()->user()->id;
-
+        $attributes['user_id'] = Auth::user()->id;
+        $attributes['name'] = ucfirst($attributes['name']);
         Deck::create($attributes);
 
         return redirect()->route('inventory.index');

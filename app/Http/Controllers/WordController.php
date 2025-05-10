@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deck;
 use App\Models\Word;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
-
+use Illuminate\Http\Request;
 use function PHPSTORM_META\map;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class WordController extends Controller
 {
@@ -16,7 +18,7 @@ class WordController extends Controller
      */
     public function index()
     {
-        $words = Word::all();
+        // $words = Word::all();
         // dd($words);
         // return Inertia::render('inventory/index', ['words' => $words]);
     }
@@ -26,7 +28,10 @@ class WordController extends Controller
      */
     public function create()
     {
-        return Inertia::render('word-processor');
+        // $userId = Auth::user()->id;
+        $deckItems = Deck::forAuthedUser()->orderBy('name', 'desc')->get();
+
+        return Inertia::render('word-processor', ['deckItems' => $deckItems]);
     }
 
     /**
@@ -35,7 +40,7 @@ class WordController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request['words']);
+        dd($request->all());
 
         $attributes = $request->validate([
             'words' => ['required', 'string']
@@ -103,7 +108,7 @@ class WordController extends Controller
 
             if ($response->successful()) {
                 $result = $response->json();
-
+                $user_id = Auth::user()->id;
                 $data[] = [
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -112,8 +117,9 @@ class WordController extends Controller
                     'pronunciation' => json_encode($result[0]['phonetics']),
                     'definition' => json_encode($result[0]['meanings']),
                     'examples' => json_encode($result[0]['examples'] ?? []),
-                    'user_id' => auth()->user()->id
+                    'user_id' => $user_id
                 ];
+
                 $transactionReport[] = [
                     'message' => "The word <$word> is successfully saved"
                 ];
@@ -125,6 +131,8 @@ class WordController extends Controller
                 ];
             }
         }
+
+
 
         // dd('Finished processing', $data);
         Word::insert($data);
