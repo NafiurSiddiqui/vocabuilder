@@ -5,6 +5,7 @@
 /public/hot
 /public/storage
 /public/transaction_report.txt
+public/transaction_report.txt
 /storage/*.key
 /storage/pail
 /vendor
@@ -23,3 +24,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+public/transaction_report.txt
