@@ -1,15 +1,13 @@
-import AppLayout from "@/layouts/app-layout";
-import { BreadcrumbItem } from "@/types";
-import { Head } from "@inertiajs/react";
-
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
+import { Head } from '@inertiajs/react';
 
 // TODO: See the kind of data you are receiving, make a type/word.tsx and use it here.
 
-export default function Show({ word }: { word: Word }) {
-
-
-    // Try to extract title from the word object or fallback to string
-    const title = typeof word === "string" ? word : word?.title ?? "";
+export default function Show({ deck }: { deck: Deck | string }) {
+    console.log(deck);
+    // Try to extract title from the deck object or fallback to string
+    const title = typeof deck === 'string' ? deck : (deck?.title ?? '');
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
