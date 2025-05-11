@@ -20,13 +20,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 type WordsForm = {
     words: string;
-    deck: string;
+    deck_id: string;
 };
 
-export default function WordProcessor({ deckItems }: { deckItems: Deck[] }) {
+export default function WordProcessor({ deckItems, defaultDeckId }: { deckItems: Deck[]; defaultDeckId: number }) {
     const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm<Required<WordsForm>>({
         words: '',
-        deck: deckItems.length > 0 ? `${deckItems[0].id}` : '',
+        deck_id: deckItems.length > 0 ? `${defaultDeckId}` : '',
     });
     console.log(deckItems);
     const submit: FormEventHandler = (e) => {
@@ -67,7 +67,7 @@ export default function WordProcessor({ deckItems }: { deckItems: Deck[] }) {
                         {/* Associate deck with select */}
                         <div>
                             <Label htmlFor="deck">Deck</Label>
-                            <Select name="deck" value={data.deck} onValueChange={(value) => setData('deck', value)}>
+                            <Select name="deck_id" value={data.deck} onValueChange={(value) => setData('deck', value)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a deck" />
                                 </SelectTrigger>

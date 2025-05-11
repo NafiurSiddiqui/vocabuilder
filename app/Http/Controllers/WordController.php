@@ -29,9 +29,11 @@ class WordController extends Controller
     public function create()
     {
         // $userId = Auth::user()->id;
-        $deckItems = Deck::forAuthedUser()->orderBy('name', 'desc')->get();
+        $deckItems = Deck::forAuthedUser()->orderBy('name')->get();
+        //get only the deck with the id of 1
+        $defaultDeckId = Deck::where('name', 'tossed')->get()->first()->id;
 
-        return Inertia::render('word-processor', ['deckItems' => $deckItems]);
+        return Inertia::render('word-processor', ['deckItems' => $deckItems, 'defaultDeckId' => $defaultDeckId]);
     }
 
     /**
@@ -43,10 +45,11 @@ class WordController extends Controller
         dd($request->all());
 
         $attributes = $request->validate([
-            'words' => ['required', 'string']
+            'words' => ['required', 'string'],
+            'deck_id' => ['required', 'exists:decks,id'],
         ]);
 
-        // Step 1: Normalize newlines to spaces
+        // Step 1: Normalize newlines to spaces (Enter key '\r' and Newline '\n')
         $normalizedInput = preg_replace('/[\r\n]+/', ' ', $attributes['words']);
 
         // Step 2: Trim extra whitespace
