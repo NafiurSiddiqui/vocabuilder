@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->json('pronunciation')->nullable();
             $table->json('definition');
             $table->json('examples')->nullable();
-            $table->string('deck')->default('tossed');
+            $table->foreignId('deck_id');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         });
     }
