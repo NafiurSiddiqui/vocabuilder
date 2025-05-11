@@ -19,7 +19,7 @@ class DeckFactory extends Factory
     {
 
         return [
-            'id' => fake()->unique()->randomNumber(),
+            'id' => fake()->unique()->randomNumber(2),
             'name' => fake()->unique()->word(),
             'description' => fake()->sentence(),
             'user_id' => 1,
