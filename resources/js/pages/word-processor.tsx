@@ -26,7 +26,7 @@ type WordsForm = {
 export default function WordProcessor({ deckItems }: { deckItems: Deck[] }) {
     const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm<Required<WordsForm>>({
         words: '',
-        deck: '',
+        deck: deckItems.length > 0 ? `${deckItems[0].id}` : '',
     });
     console.log(deckItems);
     const submit: FormEventHandler = (e) => {
@@ -67,7 +67,7 @@ export default function WordProcessor({ deckItems }: { deckItems: Deck[] }) {
                         {/* Associate deck with select */}
                         <div>
                             <Label htmlFor="deck">Deck</Label>
-                            <Select name="deck" onValueChange={(value) => setData('deck', value)}>
+                            <Select name="deck" value={data.deck} onValueChange={(value) => setData('deck', value)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a deck" />
                                 </SelectTrigger>
