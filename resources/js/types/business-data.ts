@@ -28,4 +28,5 @@ export interface Deck {
     user_id: number;
     created_at: string;
     updated_at: string;
+    words_count: number;
 }
