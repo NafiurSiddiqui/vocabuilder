@@ -13,10 +13,12 @@ class DeckController extends Controller
     public function index()
     {
         $userId = Auth::user()->id;
-        $decks = Deck::forAuthedUser()->orderBy('name', 'desc')->simplePaginate(20);
-        // $decks = Deck::where('user_id', $userId)->get();
-        // dd($decks->items());
-        // dd($decks);
+        $decks = Deck::forAuthedUser()
+            ->withCount('words') //this gives you the words_count
+            ->orderBy('name', 'desc')
+            ->simplePaginate(20);
+
+        // dd($decks->words_count);
         return Inertia::render('inventory/index', ['deckItems' => $decks->items(), 'decks' => $decks]);
     }
 
@@ -40,6 +42,7 @@ class DeckController extends Controller
 
     public function show(Deck $deck)
     {
+        // dd($deck->words()->get());
         return Inertia::render('inventory/show', ['deck' => $deck]);
     }
 
