@@ -17,7 +17,7 @@ class Word extends Model
         'pronunciation',
         'definition',
         'examples',
-        'category',
+        'deck_id',
         'user_id'
     ];
 
