@@ -42,11 +42,11 @@ class WordController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
 
         $attributes = $request->validate([
             'words' => ['required', 'string'],
-            'deck_id' => ['required', 'exists:decks,id'],
+            'deck_id' => ['nullable', 'exists:decks,id'],
         ]);
 
         // Step 1: Normalize newlines to spaces (Enter key '\r' and Newline '\n')
@@ -92,15 +92,8 @@ class WordController extends Controller
         });
         $words = array_merge($words, $remainingWords);
 
-        // // // Final debug or return the results
-        // dd([
-        //     'sentences' => $sentences,
-        //     'words' => $words,
-        // ]);
-        // dd($attributes['words']);
-        // make api calls for each words
-
-        // try {
+        // Convert the deck id to integer
+        $attributes['deck_id'] = (int) $attributes['deck_id'];
 
         $data = [];
         $transactionReport = [];
@@ -120,6 +113,7 @@ class WordController extends Controller
                     'pronunciation' => json_encode($result[0]['phonetics']),
                     'definition' => json_encode($result[0]['meanings']),
                     'examples' => json_encode($result[0]['examples'] ?? []),
+                    'deck_id' => $attributes['deck_id'],
                     'user_id' => $user_id
                 ];
 
@@ -135,6 +129,11 @@ class WordController extends Controller
             }
         }
 
+        // $data[] = [
+        //     'deck_id' => $attributes['deck_id']
+        // ];
+
+        // dd($data);
 
 
         // dd('Finished processing', $data);
