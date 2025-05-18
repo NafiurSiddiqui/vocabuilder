@@ -67,13 +67,11 @@ export default function WordProcessor({ deckItems, defaultDeckId }: { deckItems:
                         {/* Associate deck with select */}
                         <div>
                             <Label htmlFor="deck">Deck</Label>
-                            <Select name="deck_id" value={data.deck} onValueChange={(value) => setData('deck', value)}>
+                            <Select name="deck_id" value={data.deck_id} onValueChange={(value) => setData('deck_id', value)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a deck" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {/* <SelectItem value="1">Tossed</SelectItem>
-                                    <SelectItem value="2">Deck 2</SelectItem> */}
                                     {deckItems.map((deck) => (
                                         <SelectItem key={deck.id} value={`${deck.id}`}>
                                             {deck.name}
@@ -81,7 +79,7 @@ export default function WordProcessor({ deckItems, defaultDeckId }: { deckItems:
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <InputError message={errors.deck} className="mt-2" />
+                            <InputError message={errors.deck_id} className="mt-2" />
                         </div>
                         <Button className="my-2" type="submit" disabled={processing}>
                             {processing ? <LoaderCircle /> : 'Submit'}
