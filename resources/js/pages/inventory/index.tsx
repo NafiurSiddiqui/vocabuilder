@@ -130,7 +130,7 @@ export default function Inventory({ deckItems, decks }: { deckItems: Deck[]; dec
                     <DeckCard
                         key={deck.id}
                         title={deck.name}
-                        wordCount={deck.words?.count || 0}
+                        wordCount={deck.words_count || 0}
                         showCheckbox
                         checked={false}
                         onCheck={() => {}}
