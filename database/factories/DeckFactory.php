@@ -20,10 +20,10 @@ class DeckFactory extends Factory
 
         return [
             'id' => fake()->unique()->randomNumber(2),
-            'name' => fake()->unique()->word(),
+            'title' => fake()->unique()->word(),
+            'slug' => fake()->unique()->slug(),
             'description' => fake()->sentence(),
             'user_id' => 1,
-
         ];
     }
 }
