@@ -15,8 +15,10 @@ return new class extends Migration {
     {
         Schema::create('decks', function (Blueprint $table) {
             $table->id();
-            $table->unique(['name', 'user_id']);
-            $table->string('name');
+            $table->string('title');
+            $table->string('slug');
+            $table->unique(['title', 'user_id']); // Ensure each user has only one deck with the same title
+            $table->unique(['slug', 'user_id']);
             $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
@@ -27,7 +29,8 @@ return new class extends Migration {
             //Also making sure user relationship is ensured.
             Deck::firstOrCreate(
                 [
-                    'name' => DeckEnum::DEFAULT ->value,
+                    'title' => DeckEnum::DEFAULT_TITLE->value,
+                    'slug' => DeckEnum::DEFAULT_SLUG->value,
                     'user_id' => User::firstOrCreate(
                         ['email' => 'dev@local.me'],
                         [
@@ -40,7 +43,6 @@ return new class extends Migration {
                 ['description' => DeckEnum::DEFAULT_DESCRIPTION->value],
             );
         }
-
     }
 
     /**

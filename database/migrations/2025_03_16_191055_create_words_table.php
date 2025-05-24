@@ -13,7 +13,10 @@ return new class extends Migration {
         Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('word')->unique();
+            $table->string('title');
+            $table->unique(['title', 'user_id']);
+            $table->string('slug');
+            $table->unique(['slug', 'user_id']);
             $table->string('phonetic')->nullable();
             $table->json('pronunciation')->nullable();
             $table->json('definition');
