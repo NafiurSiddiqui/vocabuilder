@@ -129,7 +129,7 @@ export default function Inventory({ deckItems, decks }: { deckItems: Deck[]; dec
                 {deckItems?.map((deck) => (
                     <DeckCard
                         key={deck.id}
-                        title={deck.name}
+                        title={deck.title}
                         wordCount={deck.words_count || 0}
                         showCheckbox
                         checked={false}

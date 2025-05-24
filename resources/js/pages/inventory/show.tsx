@@ -4,10 +4,11 @@ import { Head } from '@inertiajs/react';
 
 // TODO: See the kind of data you are receiving, make a type/word.tsx and use it here.
 
-export default function Show({ deck }: { deck: Deck | string }) {
-    console.log(deck);
+export default function Show({ deck, words }: { deck: Deck | string; words: Word[] }) {
+    // console.log(deck);
+    console.log('data', words['data']);
     // Try to extract title from the deck object or fallback to string
-    const title = typeof deck === 'string' ? deck : (deck?.title ?? '');
+    const title = typeof deck === 'string' ? deck : (deck?.name ?? '');
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
