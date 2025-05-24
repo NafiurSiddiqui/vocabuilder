@@ -22,7 +22,7 @@ class DeckService
     {
 
         return Cache::rememberForever('deck.default', function () {
-            return Deck::where('name', DeckEnum::DEFAULT->value)->firstOrFail();
+            return Deck::where('title', DeckEnum::DEFAULT_TITLE->value)->firstOrFail();
         });
     }
 }
