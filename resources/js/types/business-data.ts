@@ -23,7 +23,8 @@ export interface Definitions {
 //Deck
 export interface Deck {
     id: number;
-    name: string;
+    title: string;
+    slug: string;
     description: string | null;
     user_id: number;
     created_at: string;
