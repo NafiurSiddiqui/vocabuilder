@@ -15,18 +15,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
     Route::get('/word-processor', [WordController::class, 'create'])->name('word-processor');
     Route::post('word-processor', [WordController::class, 'store'])->name('word-processor.store');
-    Route::get('/inventory', [
-        DeckController::class,
-        'index'
-    ])->name('inventory.index');
-    Route::get('/inventory/{title}', [
-        DeckController::class,
-        'show'
-    ])->name('inventory.show');
-    Route::post('/inventory', [
-        DeckController::class,
-        'store'
-    ])->name('inventory.store');
+    Route::get('/inventory', [DeckController::class, 'index'])->name('inventory.index');
+    Route::get('/inventory/{deck:title}', [DeckController::class, 'show'])->name('inventory.show');
+    Route::post('/inventory', [DeckController::class, 'store'])->name('inventory.store');
 
     // Route::get('/inventory/{title}/edit', [
     //     WordController::class,
