@@ -27,14 +27,14 @@ class Deck extends Model
      *
      * @return void
      */
-    public static function boot()
-    {
-        parent::boot();
+    // public static function boot()
+    // {
+    //     parent::boot();
 
-        static::deleting(function ($deck) {
-            Word::where('deck_id', $deck->id)->update(['deck_id' => 1]);
-        });
-    }
+    //     static::deleting(function ($deck) {
+    //         Word::where('deck_id', $deck->id)->update(['deck_id' => 1]);
+    //     });
+    // }
 
 
     public function scopeForAuthedUser()
