@@ -21,11 +21,19 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Inventory({ deckItems, decks }: { deckItems: Deck[]; decks: Deck[] }) {
+interface DefaulDeck {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    words_count?: number;
+}
+
+export default function Inventory({ deckItems, decks, defaultDeck }: { deckItems: Deck[]; decks: Deck[]; defaultDeck: DefaulDeck }) {
     const [open, setOpen] = useState(false);
-    console.log(deckItems);
+    // console.log(defaultDeck);
     const { data, setData, post, processing, errors } = useForm({
-        name: '',
+        title: '',
         description: '',
     });
 
@@ -66,9 +74,9 @@ export default function Inventory({ deckItems, decks }: { deckItems: Deck[]; dec
 
                         <form onSubmit={handleDeckSubmit}>
                             <fieldset>
-                                <Label htmlFor="name">Name</Label>
-                                <Input type="text" name="name" onChange={handleDeckChange} value={data.name} id="name" />
-                                {errors.name && <div className="my-2 text-xs text-red-500">{errors.name}</div>}
+                                <Label htmlFor="title">Title</Label>
+                                <Input type="text" name="title" onChange={handleDeckChange} value={data.title} id="title" />
+                                {errors.title && <div className="my-2 text-xs text-red-500">{errors.title}</div>}
                             </fieldset>
                             <fieldset>
                                 <Label htmlFor="description">Description</Label>
@@ -126,10 +134,23 @@ export default function Inventory({ deckItems, decks }: { deckItems: Deck[]; dec
             </div>
 
             <section className="grid gap-4 px-8 py-4 sm:grid-cols-2 lg:grid-cols-3 lg:px-6">
+                {defaultDeck && (
+                    <DeckCard
+                        key={defaultDeck.id}
+                        title={defaultDeck.title}
+                        slug={defaultDeck.slug}
+                        wordCount={defaultDeck.words_count || 0}
+                        isDefaultDeck
+                        checked={false}
+                        onCheck={() => {}}
+                        onAdd={() => {}}
+                    />
+                )}
                 {deckItems?.map((deck) => (
                     <DeckCard
                         key={deck.id}
                         title={deck.title}
+                        slug={deck.slug}
                         wordCount={deck.words_count || 0}
                         showCheckbox
                         checked={false}
