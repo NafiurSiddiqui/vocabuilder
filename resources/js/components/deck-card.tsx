@@ -6,14 +6,18 @@ import { Checkbox } from './ui/checkbox';
 
 interface DeckCardProps {
     title: string;
+    slug: string;
     wordCount: number;
+    isDefaultDeck?: boolean;
     showCheckbox?: boolean;
     checked?: boolean;
     onCheck?: (checked: boolean) => void;
     onAdd?: () => void;
 }
 
-export function DeckCard({ title, wordCount, showCheckbox = false, checked = false, onCheck, onAdd }: DeckCardProps) {
+export function DeckCard({ title, slug, wordCount, isDefaultDeck = false, showCheckbox = false, checked = false, onCheck, onAdd }: DeckCardProps) {
+    const url = isDefaultDeck ? route('inventory.default.show', slug) : route('inventory.show', slug);
+
     return (
         <Card>
             <CardHeader className="flex-row items-center justify-between gap-0">
@@ -26,7 +30,7 @@ export function DeckCard({ title, wordCount, showCheckbox = false, checked = fal
             </CardHeader>
 
             <CardContent>
-                <Link href={route('inventory.show', title)}>
+                <Link href={url}>
                     <CardTitle className="text-2xl">{title}</CardTitle>
                     {/* <span className="text-muted-foreground text-base font-medium"> */}
                     <CardDescription>
