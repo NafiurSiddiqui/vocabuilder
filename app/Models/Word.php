@@ -31,4 +31,9 @@ class Word extends Model
     {
         return $this->belongsTo(Deck::class);
     }
+
+    public function defaultDeck(): BelongsTo
+    {
+        return $this->belongsTo(DefaultDeck::class);
+    }
 }
