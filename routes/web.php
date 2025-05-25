@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DeckController;
+use App\Http\Controllers\DefaultDeckController;
 use App\Http\Controllers\WordController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,7 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/word-processor', [WordController::class, 'create'])->name('word-processor');
     Route::post('word-processor', [WordController::class, 'store'])->name('word-processor.store');
     Route::get('/inventory', [DeckController::class, 'index'])->name('inventory.index');
-    Route::get('/inventory/{deck:title}', [DeckController::class, 'show'])->name('inventory.show');
+    Route::get('/inventory/{deck:slug}', [DeckController::class, 'show'])->name('inventory.show');
+    Route::get('/inventory/default/{defaultDeck:slug}', [DefaultDeckController::class, 'show'])->name('inventory.default.show');
     Route::post('/inventory', [DeckController::class, 'store'])->name('inventory.store');
 
     // Route::get('/inventory/{title}/edit', [
