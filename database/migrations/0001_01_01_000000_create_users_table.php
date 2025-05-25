@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     /**
@@ -36,16 +37,18 @@ return new class extends Migration {
             $table->integer('last_activity')->index();
         });
 
-        //if not in production, create a user
+        // for local dev
+        // Use db table instead of ORM. A lot of time ORM fails here.
+        // updateOrInsert won't break the app if the user already exists, good for staging, development, testing.
         if (env('APP_ENV') === 'local') {
-            User::firstOrCreate(
-                ['email' => 'dev@local.me'],
-                [
-                    'name' => 'ed',
-                    'password' => bcrypt('secret'),
-                    'email_verified_at' => now()
-                ]
-            );
+            DB::table('users')->updateOrInsert([
+                'name' => 'ed',
+                'email' => 'dev@local.me',
+                'password' => bcrypt('secret'),
+                'email_verified_at' => now()->toDateTimeString(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
     }
 
