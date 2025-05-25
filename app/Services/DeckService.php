@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Models\Deck;
 use App\Enum\DeckEnum;
+use App\Models\DefaultDeck;
 use Illuminate\Support\Facades\Cache;
 
 class DeckService
@@ -18,11 +19,11 @@ class DeckService
      * 
      * @return Deck
      */
-    public function getDefaultDeck(): Deck
+    public function getDefaultDeck(): DefaultDeck
     {
 
         return Cache::rememberForever('deck.default', function () {
-            return Deck::where('title', DeckEnum::DEFAULT_TITLE->value)->firstOrFail();
+            return DefaultDeck::where('slug', DeckEnum::DEFAULT_SLUG->value)->firstOrFail();
         });
     }
 }
