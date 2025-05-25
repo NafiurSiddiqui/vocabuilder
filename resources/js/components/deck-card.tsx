@@ -22,7 +22,7 @@ export function DeckCard({ title, wordCount, showCheckbox = false, checked = fal
                     Add a word
                 </Button>
                 {/* <Checkbox checked={checked} onCheckedChange={onCheck} /> */}
-                <Checkbox />
+                {showCheckbox && <Checkbox />}
             </CardHeader>
 
             <CardContent>
