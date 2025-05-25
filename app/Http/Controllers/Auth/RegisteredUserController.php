@@ -44,16 +44,6 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-
-
-        //create a default deck
-        Deck::create([
-            'title' => DeckEnum::DEFAULT_TITLE,
-            'slug' => DeckEnum::DEFAULT_SLUG,
-            'description' => DeckEnum::DEFAULT_DESCRIPTION->value,
-            'user_id' => $user->id
-        ]);
-
         event(new Registered($user));
 
         Auth::login($user);
