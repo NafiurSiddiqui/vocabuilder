@@ -2,17 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use Closure;
 use App\Models\Deck;
 use App\Models\Word;
 use Inertia\Inertia;
+use App\Models\DefaultDeck;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use function PHPSTORM_META\map;
+use App\Services\DeckService;
 
+use function PHPSTORM_META\map;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class WordController extends Controller
 {
+    public function __construct(
+        protected DeckService $deckService,
+        protected ?int $defaultDeckId = null,
+        protected ?string $defaultDeckSlug = null
+    ) {
+        $this->deckService = $deckService;
+        $this->defaultDeckId = $deckService->getDefaultDeck()->id;
+        $this->defaultDeckSlug = $deckService->getDefaultDeck()->slug;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,11 +43,13 @@ class WordController extends Controller
     public function create()
     {
         // $userId = Auth::user()->id;
-        $deckItems = Deck::forAuthedUser()->orderBy('name')->get();
+        $deckItems = Deck::forAuthedUser()->orderBy('title', 'desc')->get();
         //get only the deck with the id of 1
-        $defaultDeckId = Deck::where('name', 'tossed')->get()->first()->id;
+        $defaultDeck = DefaultDeck::firstOrFail();
+        $deckItems->prepend($defaultDeck);
+        // dd($defaultDeck, $deckItems);
 
-        return Inertia::render('word-processor', ['deckItems' => $deckItems, 'defaultDeckId' => $defaultDeckId]);
+        return Inertia::render('word-processor', ['deckItems' => $deckItems, 'defaultDeckId' => $defaultDeck->id]);
     }
 
     /**
@@ -42,12 +58,30 @@ class WordController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request->all());
+        $deckData = json_decode($request->deck_data, true);
 
         $attributes = $request->validate([
             'words' => ['required', 'string'],
-            'deck_id' => ['nullable', 'exists:decks,id'],
+            'deck_data' => ['required', 'string'], // Validate as required JSON string
         ]);
+
+
+
+        $isDefaultDeck = false;
+
+        // Now use $deckData['id'] and $deckData['slug'] for further logic
+        if ($deckData['slug'] === $this->defaultDeckSlug && (int) $deckData['id'] === $this->defaultDeckId) {
+            // Default deck logic
+            // ...existing code...
+            $isDefaultDeck = true;
+        } else {
+            $deck = Deck::where('id', $deckData['id'])->where('slug', $deckData['slug'])->first();
+            if (!$deck) {
+                return back()->withErrors(['deck_id' => 'The selected deck does not exist.']);
+            }
+        }
+
+
 
         // Step 1: Normalize newlines to spaces (Enter key '\r' and Newline '\n')
         $normalizedInput = preg_replace('/[\r\n]+/', ' ', $attributes['words']);
@@ -92,11 +126,11 @@ class WordController extends Controller
         });
         $words = array_merge($words, $remainingWords);
 
-        // Convert the deck id to integer
-        $attributes['deck_id'] = (int) $attributes['deck_id'];
+
 
         $data = [];
         $transactionReport = [];
+
 
         foreach ($words as $word) {
             # code...
@@ -108,12 +142,14 @@ class WordController extends Controller
                 $data[] = [
                     'created_at' => now(),
                     'updated_at' => now(),
-                    'word' => $result[0]['word'],
+                    'title' => $result[0]['word'],
+                    'slug' => Str::slug($result[0]['word']),
                     'phonetic' => $result[0]['phonetic'] ?? '',
                     'pronunciation' => json_encode($result[0]['phonetics']),
                     'definition' => json_encode($result[0]['meanings']),
                     'examples' => json_encode($result[0]['examples'] ?? []),
-                    'deck_id' => $attributes['deck_id'],
+                    'deck_id' => $isDefaultDeck ? null : $deckData['id'],
+                    'default_deck_id' => $isDefaultDeck ? $deckData['id'] : null,
                     'user_id' => $user_id
                 ];
 

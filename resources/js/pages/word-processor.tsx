@@ -20,13 +20,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 type WordsForm = {
     words: string;
-    deck_id: string;
+    deck_data: string;
 };
 
 export default function WordProcessor({ deckItems, defaultDeckId }: { deckItems: Deck[]; defaultDeckId: number }) {
+    // console.log(defaultDeckId);
     const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm<Required<WordsForm>>({
         words: '',
-        deck_id: deckItems.length > 0 ? `${defaultDeckId}` : '',
+        deck_data: deckItems.length > 0 ? JSON.stringify({ id: defaultDeckId, slug: deckItems.find((d) => d.id === defaultDeckId)?.slug ?? '' }) : '',
     });
     console.log(deckItems);
     const submit: FormEventHandler = (e) => {
@@ -67,19 +68,19 @@ export default function WordProcessor({ deckItems, defaultDeckId }: { deckItems:
                         {/* Associate deck with select */}
                         <div>
                             <Label htmlFor="deck">Deck</Label>
-                            <Select name="deck_id" value={data.deck_id} onValueChange={(value) => setData('deck_id', value)}>
+                            <Select name="deck_data" value={data.deck_data} onValueChange={(value) => setData('deck_data', value)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a deck" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {deckItems.map((deck) => (
-                                        <SelectItem key={deck.id} value={`${deck.id}`}>
-                                            {deck.name}
+                                        <SelectItem key={deck.id} value={JSON.stringify({ id: deck.id, slug: deck.slug })}>
+                                            {deck.title}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <InputError message={errors.deck_id} className="mt-2" />
+                            <InputError message={errors.deck_data} className="mt-2" />
                         </div>
                         <Button className="my-2" type="submit" disabled={processing}>
                             {processing ? <LoaderCircle /> : 'Submit'}
