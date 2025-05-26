@@ -40,15 +40,17 @@ return new class extends Migration {
         // for local dev
         // Use db table instead of ORM. A lot of time ORM fails here.
         // updateOrInsert won't break the app if the user already exists, good for staging, development, testing.
+
         if (env('APP_ENV') === 'local') {
-            DB::table('users')->updateOrInsert([
-                'name' => 'ed',
-                'email' => 'dev@local.me',
-                'password' => bcrypt('secret'),
-                'email_verified_at' => now()->toDateTimeString(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            DB::table('users')->updateOrInsert(
+                ['email' => 'dev@local.me', 'name' => 'ed',],
+                [
+                    'password' => bcrypt('secret'),
+                    'email_verified_at' => now()->toDateTimeString(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
         }
     }
 

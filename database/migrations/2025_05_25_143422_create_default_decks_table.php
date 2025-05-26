@@ -24,13 +24,17 @@ return new class extends Migration
         // Use db table instead of ORM. A lot of time ORM fails here.
         // updateOrInsert won't break the app if the user already exists, good for staging, development, testing.
         // WARNING: DONT use enum for this. Should not have no dependency here.
-        DB::table('default_decks')->updateOrInsert([
-            'title' => 'Tossed',
-            'slug' => 'tossed',
-            'description' => 'Default deck - where all the words are tossed into',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+
+        //updateOrInsert([column to match], [data to update or insert])
+        DB::table('default_decks')->updateOrInsert(
+            ['slug' => 'tossed'],
+            [
+                'title' => 'Tossed',
+                'description' => 'Default deck - where all the words are tossed into',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
     }
 
     /**
