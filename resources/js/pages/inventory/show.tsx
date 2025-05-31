@@ -1,14 +1,30 @@
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
+import { Deck, Word } from '@/types/business-data';
 import { Head } from '@inertiajs/react';
 
-// TODO: See the kind of data you are receiving, make a type/word.tsx and use it here.
+interface paginatedWords {
+    current_page: number;
+    current_page_url: string;
+    data: Word[];
+    first_page_url: string;
+    from: number;
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+}
 
-export default function Show({ deck, words }: { deck: Deck | string; words: Word[] }) {
-    // console.log(deck);
+interface Props {
+    deck: Deck | string;
+    words: paginatedWords;
+}
+
+export default function Show({ deck, words }: Props) {
     console.log('data', words['data']);
     // Try to extract title from the deck object or fallback to string
-    const title = typeof deck === 'string' ? deck : (deck?.name ?? '');
+    const title = typeof deck === 'string' ? deck : (deck?.title ?? '');
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
