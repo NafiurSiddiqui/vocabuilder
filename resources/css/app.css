@@ -157,3 +157,7 @@
         @apply bg-background text-foreground;
     }
 }
+
+@utility borderTest {
+    @apply border border-amber-500;
+}
