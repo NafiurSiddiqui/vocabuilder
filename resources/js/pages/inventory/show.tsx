@@ -1,3 +1,4 @@
+import { WordIndexAccordion } from '@/components/word-index-accordion';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Deck, Word } from '@/types/business-data';
@@ -22,7 +23,8 @@ interface Props {
 }
 
 export default function Show({ deck, words }: Props) {
-    console.log('data', words['data']);
+    const dataparsed = JSON.parse(words['data'][0]['definition']);
+    // console.log('data', dataparsed);
     // Try to extract title from the deck object or fallback to string
     const title = typeof deck === 'string' ? deck : (deck?.title ?? '');
 
@@ -40,9 +42,12 @@ export default function Show({ deck, words }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Inventory: ${title}`} />
-            <div>
-                <h3>Show all the cards in this category</h3>
-            </div>
+            <section className="p-4">
+                {/* <h2 className="mb-4 text-2xl">{title}</h2> */}
+                <div className="w-full">
+                    <WordIndexAccordion Letter="A" wordCount={words['data'].length} words={words['data']} />
+                </div>
+            </section>
         </AppLayout>
     );
 }
