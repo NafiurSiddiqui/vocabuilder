@@ -1,12 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { capitalizeFirstLetter } from '@/lib/utils';
 import { Word } from '@/types/business-data';
 import { Link } from '@inertiajs/react';
-import { DialogTitle } from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardTitle } from '../ui/card';
-import { Dialog, DialogContent, DialogHeader } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import WordCardDetail from './word-card-detail';
 
 // clickable card
@@ -14,30 +14,25 @@ import WordCardDetail from './word-card-detail';
 
 export function WordCard({ word }: { word: Word }) {
     const [open, setOpen] = useState(false);
-
-    const wordParsed = JSON.parse(word['definition']);
-    const definitions = wordParsed[0]['definitions'];
-    const partsOfSpeech = wordParsed[0]['partOfSpeech'];
-    const synonyms = wordParsed[0]['synonyms'];
-    console.log(word);
-    console.log(definitions);
-    console.log(partsOfSpeech);
-    console.log(synonyms);
+    // console.log(word);
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
+                    {/* <VisuallyHidden asChild>> */}
                     <DialogHeader>
-                        <DialogTitle>{word.title}</DialogTitle>
+                        <DialogTitle className="sr-only">{word.title}</DialogTitle>
                     </DialogHeader>
-                    <WordCardDetail />
+                    {/* </VisuallyHidden> */}
+                    <WordCardDetail word={word} />
                 </DialogContent>
             </Dialog>
             <Card className="rounded-none">
                 <CardContent className="flex items-center justify-between">
                     <CardTitle className="">
                         <Button variant={'link'} onClick={() => setOpen(true)} className="text-xl font-normal">
-                            {word.title[0].toUpperCase() + word.title.slice(1)}
+                            {/* {word.title[0].toUpperCase() + word.title.slice(1)} */}
+                            {capitalizeFirstLetter(word.title)}
                         </Button>
                     </CardTitle>
                     {/* Parts of Speech */}
