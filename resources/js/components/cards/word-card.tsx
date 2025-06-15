@@ -14,16 +14,16 @@ import WordCardDetail from './word-card-detail';
 
 export function WordCard({ word }: { word: Word }) {
     const [open, setOpen] = useState(false);
-    // console.log(word);
+    console.log(word);
+
     return (
         <>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent>
-                    {/* <VisuallyHidden asChild>> */}
+                <DialogContent className={'max-h-screen overflow-y-scroll lg:max-w-screen-lg'}>
                     <DialogHeader>
                         <DialogTitle className="sr-only">{word.title}</DialogTitle>
                     </DialogHeader>
-                    {/* </VisuallyHidden> */}
+
                     <WordCardDetail word={word} />
                 </DialogContent>
             </Dialog>
