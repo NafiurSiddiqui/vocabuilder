@@ -6,16 +6,10 @@ import { useRef } from 'react';
 import { Badge } from '../ui/badge';
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
-// interface WordProcessed {
-//     definitions: Array<string>;
-//     partOfSpeech: string;
-//     synonyms: string;
-// }
-// const wordProcessed = {
-//     definitions: definitions,
-//     partOfSpeech: partsOfSpeech,
-//     synonyms: synonyms,
-// };
+interface Pronunciation {
+    audio: string;
+    text: string;
+}
 
 export default function WordCardDetail({ word }: { word: Word }) {
     const wordParsed = JSON.parse(word['definition']);
@@ -48,10 +42,11 @@ export default function WordCardDetail({ word }: { word: Word }) {
                         {capitalizeFirstLetter(word.title)}
                     </h2>
                     {/* TODO: Render pronunciation properly, there maybe one or more */}
-                    <div className="flex items-center gap-2">
-                        {pronunciation.map((index, pronunciation) => {
+                    <div className="flex items-center gap-4">
+                        {pronunciation.map((pronunciation: Pronunciation, index: number) => {
                             return (
-                                <div key={index + 1}>
+                                <div key={index + 1} className="flex items-center">
+                                    <span>{pronunciation['audio'].includes('uk') ? '🇬🇧' : '🇺🇸'}</span>
                                     <button
                                         onClick={playAudio}
                                         className="rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
