@@ -65,8 +65,14 @@ class DeckController extends Controller
     public function show(Deck $deck): Response
     {
 
-        $words = $deck->words()->orderBy('title', 'desc')->simplePaginate(20);
+        // $words = $deck->words()->orderBy('title', 'desc')->simplePaginate(20);
 
+        $words = $deck->words()
+            ->orderBy('title')
+            ->get()
+            ->groupBy(function ($word) {
+                return strtoupper(substr($word->title, 0, 1));
+            });
         return Inertia::render('inventory/show', ['deck' => $deck, 'words' => $words]);
     }
 
