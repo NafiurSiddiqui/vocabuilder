@@ -12,9 +12,8 @@ import WordCardDetail from './word-card-detail';
 // clickable card
 //opens modal onclick for detailed information of the word
 
-export function WordCard({ word }: { word: Word }) {
+export function WordCard({ word, deckTitle }: { word: Word; deckTitle: string }) {
     const [open, setOpen] = useState(false);
-    console.log(word);
 
     return (
         <>
@@ -24,7 +23,7 @@ export function WordCard({ word }: { word: Word }) {
                         <DialogTitle className="sr-only">{word.title}</DialogTitle>
                     </DialogHeader>
 
-                    <WordCardDetail word={word} />
+                    <WordCardDetail word={word} deckTitle={deckTitle} />
                 </DialogContent>
             </Dialog>
             <Card className="rounded-none">

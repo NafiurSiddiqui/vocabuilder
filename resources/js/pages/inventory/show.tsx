@@ -18,7 +18,7 @@ interface paginatedWords {
 }
 
 interface Props {
-    deck: Deck | string;
+    deck: Deck;
     words: paginatedWords;
 }
 
@@ -38,14 +38,14 @@ export default function Show({ deck, words }: Props) {
             href: `/inventory/${encodeURIComponent(title)}`,
         },
     ];
-
+    //TODO: props drilling starts with this deckTitle. Which the category dropdown needs on the card-details. useContext or some other ways to share data. NO PROPS DRILLING!
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Inventory: ${title}`} />
             <section className="p-4">
                 {/* <h2 className="mb-4 text-2xl">{title}</h2> */}
                 <div className="w-full">
-                    <WordIndexAccordion Letter="A" wordCount={words['data'].length} words={words['data']} />
+                    <WordIndexAccordion Letter="A" wordCount={words['data'].length} words={words['data']} deckTitle={deck.title} />
                 </div>
             </section>
         </AppLayout>

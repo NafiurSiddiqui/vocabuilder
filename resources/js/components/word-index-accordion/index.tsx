@@ -6,9 +6,10 @@ interface Props {
     Letter: string;
     wordCount: number;
     words: Word[];
+    deckTitle: string;
 }
 
-export function WordIndexAccordion({ Letter, wordCount, words }: Props) {
+export function WordIndexAccordion({ Letter, wordCount, words, deckTitle }: Props) {
     return (
         <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1" className="">
@@ -22,7 +23,7 @@ export function WordIndexAccordion({ Letter, wordCount, words }: Props) {
                     <div className="border-l-2 pt-2">
                         {/* Run loops */}
                         {words.map((word: Word) => {
-                            return <WordCard key={word.id} word={word} />;
+                            return <WordCard key={word.id} word={word} deckTitle={deckTitle} />;
                         })}
                     </div>
                 </AccordionContent>
