@@ -1,9 +1,10 @@
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { Word } from '@/types/business-data';
 import { DropdownMenu } from '@radix-ui/react-dropdown-menu';
-import { Volume2 } from 'lucide-react';
+import { ChevronDown, Volume2 } from 'lucide-react';
 import { useRef } from 'react';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Separator } from '../ui/separator';
 
@@ -19,7 +20,7 @@ interface Definition {
     synonyms: string[];
 }
 
-export default function WordCardDetail({ word }: { word: Word }) {
+export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTitle: string }) {
     const wordParsed = JSON.parse(word['definition']);
     const synonyms = wordParsed[0]['synonyms'];
     const pronunciation = JSON.parse(word.pronunciation);
@@ -30,7 +31,7 @@ export default function WordCardDetail({ word }: { word: Word }) {
     const playAudio = () => {
         audioRef.current?.play();
     };
-
+    console.log(word);
     return wordParsed.map((wordParsed, index) => {
         // console.log();
         return (
@@ -66,12 +67,16 @@ export default function WordCardDetail({ word }: { word: Word }) {
                         </div>
                     </div>
 
-                    {/* Right Side */}
+                    {/* Dropdown */}
                     <div className="flex flex-col items-end gap-2">
-                        <DropdownMenu>
+                        <DropdownMenu defaultOpen={true}>
                             <DropdownMenuTrigger asChild>
-                                <Badge>Category</Badge>
+                                <Button size={'sm'}>
+                                    <ChevronDown />
+                                    <span className="">{deckTitle}</span>
+                                </Button>
                             </DropdownMenuTrigger>
+                            {/* TODO: Render list of decks, probably need a seprate controller/component for this. */}
                             <DropdownMenuContent sideOffset={5}>
                                 <DropdownMenuLabel>Deck</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
