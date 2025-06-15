@@ -44,7 +44,6 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
                         <h2 id="word-title" className="text-3xl font-bold">
                             {capitalizeFirstLetter(word.title)}
                         </h2>
-                        {/* TODO: Render pronunciation properly, there maybe one or more */}
                         <div className="flex items-center gap-4">
                             {pronunciation.map((pronunciation: Pronunciation, index: number) => {
                                 return (
