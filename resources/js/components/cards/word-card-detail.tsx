@@ -85,6 +85,7 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
                             </DropdownMenuContent>
                         </DropdownMenu> */}
                         <div>
+                            {/* TODO: FROM here. Make a dropdown to select a deck */}
                             {/* <Label htmlFor="deck">Deck</Label> */}
                             {/* <Select name="deck_data" value={data.deck_data} onValueChange={(value) => setData('deck_data', value)}>
                                 <SelectTrigger>
