@@ -1,9 +1,11 @@
 import { useDeckContext } from '@/context/DeckContext';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { Word } from '@/types/business-data';
+import { useForm } from '@inertiajs/react';
 import { Volume2 } from 'lucide-react';
 import { useRef } from 'react';
 import { Badge } from '../ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Separator } from '../ui/separator';
 
 interface Pronunciation {
@@ -22,12 +24,16 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
     const wordParsed = JSON.parse(word['definition']);
     const synonyms = wordParsed[0]['synonyms'];
     const pronunciation = JSON.parse(word.pronunciation);
-
     const { decks, defaultDeck } = useDeckContext();
-    console.log(decks[0], defaultDeck);
-    // console.log('Deck items', deckItems);
-    const audioRef = useRef<HTMLAudioElement>(null);
 
+    const deckItems = [...decks, defaultDeck];
+
+    const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm({
+        deck_data:
+            deckItems.length > 0 ? JSON.stringify({ id: defaultDeck.id, slug: deckItems.find((d) => d.id === defaultDeck.id)?.slug ?? '' }) : '',
+    });
+
+    const audioRef = useRef<HTMLAudioElement>(null);
     const playAudio = () => {
         audioRef.current?.play();
     };
@@ -67,27 +73,8 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
 
                     {/* Dropdown */}
                     <div className="flex flex-col items-end gap-2">
-                        {/* <DropdownMenu defaultOpen={true}>
-                            <DropdownMenuTrigger asChild>
-                                <Button size={'sm'}>
-                                    <ChevronDown />
-                                    <span className="">{deckTitle}</span>
-                                </Button>
-                            </DropdownMenuTrigger> */}
-                        {/* TODO: Render list of decks, probably need a seprate controller/component for this. */}
-                        {/* <DropdownMenuContent sideOffset={5}>
-                                <DropdownMenuLabel>Deck</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>Default Deck</DropdownMenuItem>
-                                <DropdownMenuItem>Advanced Vocab</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>✏️ Edit deck</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu> */}
                         <div>
-                            {/* TODO: FROM here. Make a dropdown to select a deck */}
-                            {/* <Label htmlFor="deck">Deck</Label> */}
-                            {/* <Select name="deck_data" value={data.deck_data} onValueChange={(value) => setData('deck_data', value)}>
+                            <Select name="deck_data" value={data.deck_data} onValueChange={(value) => setData('deck_data', value)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a deck" />
                                 </SelectTrigger>
@@ -99,7 +86,7 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <InputError message={errors.deck_data} className="mt-2" /> */}
+                            {/* <InputError message={errors.deck_data} className="mt-2" />  */}
                         </div>
                     </div>
                 </header>
