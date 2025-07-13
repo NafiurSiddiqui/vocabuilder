@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deck;
 use App\Models\DefaultDeck;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ class DefaultDeckController extends Controller
 
     public function show(DefaultDeck $defaultDeck): Response
     {
-
+        $userId = Auth::user()->id;
         // $words = $defaultDeck->words()->orderBy('title', 'desc')->simplePaginate(20);
 
         $words = $defaultDeck->words()
@@ -23,6 +24,11 @@ class DefaultDeckController extends Controller
                 return strtoupper(substr($word->title, 0, 1));
             });
 
-        return Inertia::render('inventory/show', ['deck' => $defaultDeck, 'words' => $words]);
+
+        $decks = Deck::where('user_id', $userId)
+            ->orderBy('title', 'desc')
+            ->simplePaginate(20);
+        // dd($decks, $defaultDeck);
+        return Inertia::render('inventory/show', ['currentDeck' => $defaultDeck, 'decks' => $decks, 'defaultDeck' => $defaultDeck, 'words' => $words]);
     }
 }

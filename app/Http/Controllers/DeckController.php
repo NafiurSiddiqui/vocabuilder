@@ -12,7 +12,7 @@ use App\Services\DeckService;
 use Illuminate\Support\Facades\Auth;
 
 
-//Make sure you are fetching only the data that belongs to the user
+//NOTE:Make sure you are fetching only the data that belongs to the user
 
 class DeckController extends Controller
 {
@@ -64,7 +64,7 @@ class DeckController extends Controller
 
     public function show(Deck $deck): Response
     {
-
+        $userId = Auth::user()->id;
         // $words = $deck->words()->orderBy('title', 'desc')->simplePaginate(20);
 
         $words = $deck->words()
@@ -73,7 +73,21 @@ class DeckController extends Controller
             ->groupBy(function ($word) {
                 return strtoupper(substr($word->title, 0, 1));
             });
-        return Inertia::render('inventory/show', ['deck' => $deck, 'words' => $words]);
+
+        $decks = Deck::where('user_id', $userId)
+            ->orderBy('title', 'desc')
+            ->simplePaginate(20);
+
+
+        $defaultDeck = DefaultDeck::withCount([
+            'words as words_count' => function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            }
+        ])->firstOrFail();
+
+
+        // dd($decks);
+        return Inertia::render('inventory/show', ['currentDeck' => $deck, 'words' => $words, 'decks' => $decks, 'defaultDeck' => $defaultDeck]);
     }
 
     public function edit(Deck $deck)
