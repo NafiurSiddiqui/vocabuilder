@@ -27,8 +27,16 @@ export interface Deck {
     title: string;
     slug: string;
     description: string | null;
-    user_id: number;
+    user_id?: number;
     created_at: string;
     updated_at: string;
     words_count: number;
+}
+
+export interface DefaultDeck {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    words_count?: number;
 }
