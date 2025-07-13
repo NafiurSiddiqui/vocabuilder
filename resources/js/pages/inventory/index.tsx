@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { Deck } from '@/types/business-data';
+import { Deck, DefaultDeck } from '@/types/business-data';
 import { Head, useForm } from '@inertiajs/react';
 import { Filter, Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -21,15 +21,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface DefaulDeck {
-    id: number;
-    title: string;
-    slug: string;
-    description: string;
-    words_count?: number;
-}
-
-export default function Inventory({ deckItems, decks, defaultDeck }: { deckItems: Deck[]; decks: Deck[]; defaultDeck: DefaulDeck }) {
+export default function Inventory({ deckItems, decks, defaultDeck }: { deckItems: Deck[]; decks: Deck[]; defaultDeck: DefaultDeck }) {
     const [open, setOpen] = useState(false);
     // console.log(defaultDeck);
     const { data, setData, post, processing, errors } = useForm({
@@ -44,6 +36,7 @@ export default function Inventory({ deckItems, decks, defaultDeck }: { deckItems
         });
     };
 
+    // console.log(decks.data[0], defaultDeck);
     const handleDeckSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -59,6 +52,7 @@ export default function Inventory({ deckItems, decks, defaultDeck }: { deckItems
             <Head title="Inventory" />
 
             <div className="flex items-center justify-between border-b px-6 py-1">
+                {/* create a deck */}
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
                         <Button variant="default" className="rounded-sm p-2" size="sm">
