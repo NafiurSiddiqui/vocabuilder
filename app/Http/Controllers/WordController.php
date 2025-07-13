@@ -210,7 +210,7 @@ class WordController extends Controller
      */
     public function update(Request $request, Word $word)
     {
-        //
+        dd($request->all(), $word);
     }
 
     /**

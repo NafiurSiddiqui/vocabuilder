@@ -28,10 +28,15 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
 
     const deckItems = [...decks, defaultDeck];
 
-    const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm({
+    const { data, setData, processing, errors, reset, recentlySuccessful, patch } = useForm({
         deck_data:
             deckItems.length > 0 ? JSON.stringify({ id: defaultDeck.id, slug: deckItems.find((d) => d.id === defaultDeck.id)?.slug ?? '' }) : '',
     });
+
+    const deckUpdateHandler: (value: string) => void = (value) => {
+        setData('deck_data', value);
+        patch(route('word-processor.update'), {});
+    };
 
     const audioRef = useRef<HTMLAudioElement>(null);
     const playAudio = () => {
@@ -74,7 +79,8 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
                     {/* Dropdown */}
                     <div className="flex flex-col items-end gap-2">
                         <div>
-                            <Select name="deck_data" value={data.deck_data} onValueChange={(value) => setData('deck_data', value)}>
+                            {/* <Select name="deck_data" value={data.deck_data} onValueChange={(value) => setData('deck_data', value)}> */}
+                            <Select name="deck_data" value={data.deck_data} onValueChange={deckUpdateHandler}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a deck" />
                                 </SelectTrigger>
