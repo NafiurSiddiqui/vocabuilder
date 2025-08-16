@@ -1,9 +1,10 @@
 import { useDeckContext } from '@/context/DeckContext';
 import { capitalizeFirstLetter } from '@/lib/utils';
 import { Word } from '@/types/business-data';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { Volume2 } from 'lucide-react';
 import { useRef } from 'react';
+import InputError from '../input-error';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Separator } from '../ui/separator';
@@ -29,13 +30,26 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
     const deckItems = [...decks, defaultDeck];
 
     const { data, setData, processing, errors, reset, recentlySuccessful, patch } = useForm({
+        //word has default deck id or deck_id? set default_deck_id otherwise, deck_id
         deck_data:
-            deckItems.length > 0 ? JSON.stringify({ id: defaultDeck.id, slug: deckItems.find((d) => d.id === defaultDeck.id)?.slug ?? '' }) : '',
+            deckItems.length > 0
+                ? word.default_deck_id
+                    ? JSON.stringify({ id: defaultDeck.id, slug: defaultDeck.slug })
+                    : JSON.stringify({ id: word.deck_id, slug: deckItems.find((d) => d.id === word.deck_id)?.slug ?? '' })
+                : '',
+        word_id: word.id,
     });
 
     const deckUpdateHandler: (value: string) => void = (value) => {
-        setData('deck_data', value);
-        patch(route('word-processor.update'), {});
+        const selectedDeck = JSON.parse(value) as { id: number; slug: string };
+        if (!selectedDeck) return;
+
+        const newDeckData = JSON.stringify({ id: selectedDeck.id, slug: selectedDeck.slug });
+
+        router.patch(route('word-processor.update'), {
+            deck_data: newDeckData,
+            word_id: word.id,
+        });
     };
 
     const audioRef = useRef<HTMLAudioElement>(null);
@@ -80,6 +94,7 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
                     <div className="flex flex-col items-end gap-2">
                         <div>
                             {/* <Select name="deck_data" value={data.deck_data} onValueChange={(value) => setData('deck_data', value)}> */}
+
                             <Select name="deck_data" value={data.deck_data} onValueChange={deckUpdateHandler}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select a deck" />
@@ -87,12 +102,14 @@ export default function WordCardDetail({ word, deckTitle }: { word: Word; deckTi
                                 <SelectContent>
                                     {deckItems.map((deck) => (
                                         <SelectItem key={deck.id} value={JSON.stringify({ id: deck.id, slug: deck.slug })}>
+                                            {deck.slug}
+                                            {deck.id}
                                             {deck.title}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            {/* <InputError message={errors.deck_data} className="mt-2" />  */}
+                            <InputError message={errors.deck_data} className="mt-2" />
                         </div>
                     </div>
                 </header>
