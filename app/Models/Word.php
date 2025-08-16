@@ -18,7 +18,8 @@ class Word extends Model
         'definition',
         'examples',
         'deck_id',
-        'user_id'
+        'user_id',
+        'default_deck_id',
     ];
 
 
