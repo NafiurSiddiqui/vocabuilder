@@ -200,17 +200,35 @@ class WordController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Word $word)
-    {
-        //
-    }
+    public function edit(Request $request) {}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Word $word)
+    public function update(Request $request)
     {
-        dd($request->all(), $word);
+
+        $attributes = $request->validate([
+            'deck_data' => ['required', 'string'],
+            'word_id'   => ['required', 'integer', 'exists:words,id'],
+        ]);
+
+        $deckData = json_decode($attributes['deck_data'], true);
+
+
+        $word = Word::findOrFail($attributes['word_id']);
+
+        $requestIsForDefaultDeck = $deckData['slug'] === $this->defaultDeckSlug;
+
+
+        $word->update([
+            'deck_id'        => $requestIsForDefaultDeck ? null : $deckData['id'],
+            'default_deck_id' => $requestIsForDefaultDeck ? 1 : null,
+        ]);
+
+
+
+        return back()->with('success', 'Word updated successfully');
     }
 
     /**
