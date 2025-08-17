@@ -10,10 +10,10 @@ use App\Models\DefaultDeck;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\DeckService;
-
 use function PHPSTORM_META\map;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+
 
 class WordController extends Controller
 {
@@ -234,8 +234,14 @@ class WordController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Word $word)
+    public function destroy(Request $request, Word $word)
     {
-        //
+        $request->validate([
+            'word_id' => 'required|exists:words,id'
+        ]);
+
+        $word->delete();
+
+        return back()->with('success', 'Word deleted successfully');
     }
 }
