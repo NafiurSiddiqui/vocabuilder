@@ -22,19 +22,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/inventory/{deck:slug}', [DeckController::class, 'show'])->name('inventory.show');
     Route::get('/inventory/default/{defaultDeck:slug}', [DefaultDeckController::class, 'show'])->name('inventory.default.show');
     Route::post('/inventory', [DeckController::class, 'store'])->name('inventory.store');
-
-    // Route::get('/inventory/{title}/edit', [
-    //     WordController::class,
-    //     'edit'
-    // ])->name('inventory.edit');
-    // Route::put('/inventory/{title}', [
-    //     WordController::class,
-    //     'update'
-    // ])->name('inventory.update');
-    // Route::delete('/inventory/{title}', [
-    //     WordController::class,
-    //     'destroy'
-    // ])->name('inventory.destroy');
 });
 
 require __DIR__ . '/settings.php';
