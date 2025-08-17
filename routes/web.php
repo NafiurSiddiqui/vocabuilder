@@ -17,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/word-processor', [WordController::class, 'create'])->name('word-processor');
     Route::post('word-processor', [WordController::class, 'store'])->name('word-processor.store');
     Route::patch('/word-processor', [WordController::class, 'update'])->name('word-processor.update');
+    Route::delete('/word-processor/{word}', [WordController::class, 'destroy'])->name('word-processor.destroy');
     Route::get('/inventory', [DeckController::class, 'index'])->name('inventory.index');
     Route::get('/inventory/{deck:slug}', [DeckController::class, 'show'])->name('inventory.show');
     Route::get('/inventory/default/{defaultDeck:slug}', [DefaultDeckController::class, 'show'])->name('inventory.default.show');
